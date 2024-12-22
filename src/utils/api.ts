@@ -1,7 +1,9 @@
 const BASE_URL = 'https://www.palmtourism-uae.net/api';
 
 export const fetchApi = async (endpoint: string, options: RequestInit = {}) => {
-  console.log(`Fetching ${BASE_URL}${endpoint}`);
+  // Remove leading slash to prevent double slashes
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
+  console.log(`Fetching ${BASE_URL}/${cleanEndpoint}`);
   
   const defaultOptions: RequestInit = {
     credentials: 'include',
@@ -13,7 +15,7 @@ export const fetchApi = async (endpoint: string, options: RequestInit = {}) => {
   };
 
   try {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
+    const response = await fetch(`${BASE_URL}/${cleanEndpoint}`, {
       ...defaultOptions,
       ...options,
       headers: {
@@ -27,10 +29,10 @@ export const fetchApi = async (endpoint: string, options: RequestInit = {}) => {
     }
 
     const data = await response.json();
-    console.log(`API Response for ${endpoint}:`, data);
+    console.log(`API Response for ${cleanEndpoint}:`, data);
     return data;
   } catch (error) {
-    console.error(`API Error for ${endpoint}:`, error);
+    console.error(`API Error for ${cleanEndpoint}:`, error);
     throw error;
   }
 };

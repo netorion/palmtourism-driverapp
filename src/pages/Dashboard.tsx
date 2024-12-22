@@ -31,7 +31,7 @@ const Dashboard = () => {
   const { data: stats, isLoading: statsLoading, error: statsError } = useQuery({
     queryKey: ['tripStats', driver?.driver_id],
     queryFn: async () => {
-      return fetchApi(`/trips/stats/${driver?.driver_id}`) as Promise<TripStats>;
+      return fetchApi(`trips/stats/${driver?.driver_id}`) as Promise<TripStats>;
     },
     enabled: !!driver?.driver_id,
   });
@@ -39,7 +39,7 @@ const Dashboard = () => {
   const { data: todaysTrips, isLoading: tripsLoading, error: tripsError } = useQuery({
     queryKey: ['todaysTrips', driver?.driver_id],
     queryFn: async () => {
-      return fetchApi(`/trips/assigned/${driver?.driver_id}`) as Promise<Trip[]>;
+      return fetchApi(`trips/assigned/${driver?.driver_id}`) as Promise<Trip[]>;
     },
     enabled: !!driver?.driver_id,
   });
