@@ -2,11 +2,29 @@ import { Home, Car, Map, Bell, LogOut } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
+import { toast } from '@/hooks/use-toast';
 
 const BottomNav = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast({
+        title: "Success",
+        description: "You have been logged out successfully",
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to logout. Please try again.",
+      });
+    }
+  };
 
   const navItems = [
     { icon: Home, label: 'Home', path: '/dashboard' },
@@ -34,7 +52,7 @@ const BottomNav = () => {
           </button>
         ))}
         <button
-          onClick={() => logout()}
+          onClick={handleLogout}
           className="flex flex-col items-center p-2 rounded-lg text-gray-500 hover:text-destructive"
         >
           <LogOut className="h-6 w-6" />
