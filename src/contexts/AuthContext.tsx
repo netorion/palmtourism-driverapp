@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/hooks/use-toast';
+import { fetchApi } from '@/utils/api';
 
 interface Driver {
   driver_id: string;
@@ -39,6 +40,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const response = await fetch('https://www.palmtourism-uae.net/api/auth/login', {
         method: 'POST',
         body: formData,
+        credentials: 'include',
+        mode: 'cors',
       });
 
       const data = await response.json();
@@ -67,7 +70,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async () => {
     try {
-      await fetch('https://www.palmtourism-uae.net/api/auth/logout');
+      await fetchApi('/auth/logout');
       setDriver(null);
       localStorage.removeItem('driver');
       navigate('/login');

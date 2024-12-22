@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import TripCard from '@/components/TripCard';
+import { fetchApi } from '@/utils/api';
+import { toast } from '@/hooks/use-toast';
 
 interface TripStats {
   pending: number;
@@ -26,23 +28,32 @@ interface Trip {
 const Dashboard = () => {
   const { driver } = useAuth();
 
-  const { data: stats, isLoading: statsLoading } = useQuery({
+  const { data: stats, isLoading: statsLoading, error: statsError } = useQuery({
     queryKey: ['tripStats', driver?.driver_id],
     queryFn: async () => {
-      const response = await fetch(`https://www.palmtourism-uae.net/api/trips/stats/${driver?.driver_id}`);
-      return response.json() as Promise<TripStats>;
+      return fetchApi(`/trips/stats/${driver?.driver_id}`) as Promise<TripStats>;
     },
     enabled: !!driver?.driver_id,
   });
 
-  const { data: todaysTrips, isLoading: tripsLoading } = useQuery({
+  const { data: todaysTrips, isLoading: tripsLoading, error: tripsError } = useQuery({
     queryKey: ['todaysTrips', driver?.driver_id],
     queryFn: async () => {
-      const response = await fetch(`https://www.palmtourism-uae.net/api/trips/assigned/${driver?.driver_id}`);
-      return response.json() as Promise<Trip[]>;
+      return fetchApi(`/trips/assigned/${driver?.driver_id}`) as Promise<Trip[]>;
     },
     enabled: !!driver?.driver_id,
   });
+
+  useEffect(() => {
+    if (statsError || tripsError) {
+      console.error('Query error:', { statsError, tripsError });
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to fetch data. Please try again later.",
+      });
+    }
+  }, [statsError, tripsError]);
 
   if (statsLoading || tripsLoading) {
     return (
