@@ -1,7 +1,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
-import TripCard from "@/components/TripCard";
+import TripCardOthers from "@/components/TripCardOthers";
 
 interface Trip {
   id: string;
@@ -9,6 +9,7 @@ interface Trip {
   pickup: string;
   dropoff: string;
   hotel: string;
+  driver: string;
   total_persons: number;
   booking_type: string;
   type: string;
@@ -37,12 +38,12 @@ const AllTrips = () => {
 
   return (
     <div className="p-4 pb-20 pt-16">
-      <h1 className="text-2xl font-bold mb-6">All Trips</h1>
+      <h1 className="text-2xl font-bold mb-6">All Trips (Other Drivers)</h1>
       
       <div className="space-y-4">
         {otherTrips && otherTrips.length > 0 ? (
           otherTrips.map((trip) => (
-            <TripCard key={trip.id} trip={trip} showViewDetails={false} />
+            <TripCardOthers key={trip.id} trip={trip} showViewDetails={false} />
           ))
         ) : (
           <p className="text-center text-muted-foreground">No trips assigned to other drivers</p>
