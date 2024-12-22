@@ -39,11 +39,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const response = await fetch('https://www.palmtourism-uae.net/api/auth/login', {
         method: 'POST',
         body: formData,
-        mode: 'cors',
-        credentials: 'include',
-        headers: {
-          'Accept': 'application/json',
-        }
       });
 
       const data = await response.json();
@@ -72,14 +67,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async () => {
     try {
-      await fetch('https://www.palmtourism-uae.net/api/auth/logout', {
-        method: 'POST',
-        mode: 'cors',
-        credentials: 'include',
-        headers: {
-          'Accept': 'application/json',
-        }
-      });
+      await fetch('https://www.palmtourism-uae.net/api/auth/logout');
       setDriver(null);
       localStorage.removeItem('driver');
       navigate('/login');
