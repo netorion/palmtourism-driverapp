@@ -1,4 +1,4 @@
-import { CalendarClock, MapPin, Users, CarFront } from 'lucide-react';
+import { CalendarClock, MapPin, Users, CarFront, MapPinned } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,7 @@ interface TripCardProps {
     dropoff: string;
     hotel: string;
     driver: string;
+    service: string;
     total_persons: number;
     booking_type: string;
     type: string;
@@ -39,6 +40,10 @@ const TripCard = ({ trip, showViewDetails = true }: TripCardProps) => {
         <div className="flex items-center gap-2 text-sm">
           <MapPin className="h-4 w-4 text-primary" />
           <span>{trip.hotel}</span>
+        </div>
+        <div className="flex items-center gap-2 text-sm">
+          <MapPinned className="h-4 w-4 text-primary" />
+          <span>{trip.service}</span>
         </div>
         <div className="flex items-center gap-2 text-sm">
           <CalendarClock className="h-4 w-4 text-primary" />
