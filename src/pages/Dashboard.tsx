@@ -23,14 +23,28 @@ interface Trip {
   trip_status: string;
 }
 
+const fetchWithCORS = async (url: string) => {
+  const response = await fetch(url, {
+    method: 'GET',
+    mode: 'cors',
+    credentials: 'include',
+    headers: {
+      'Accept': 'application/json',
+    }
+  });
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return response.json();
+};
+
 const Dashboard = () => {
   const { driver } = useAuth();
 
   const { data: stats, isLoading: statsLoading } = useQuery({
     queryKey: ['tripStats', driver?.driver_id],
     queryFn: async () => {
-      const response = await fetch(`https://www.palmtourism-uae.net/api/trips/stats/${driver?.driver_id}`);
-      return response.json() as Promise<TripStats>;
+      return fetchWithCORS(`https://www.palmtourism-uae.net/api/trips/stats/${driver?.driver_id}`);
     },
     enabled: !!driver?.driver_id,
   });
@@ -38,8 +52,7 @@ const Dashboard = () => {
   const { data: todaysTrips, isLoading: tripsLoading } = useQuery({
     queryKey: ['todaysTrips', driver?.driver_id],
     queryFn: async () => {
-      const response = await fetch(`https://www.palmtourism-uae.net/api/trips/assigned/${driver?.driver_id}`);
-      return response.json() as Promise<Trip[]>;
+      return fetchWithCORS(`https://www.palmtourism-uae.net/api/trips/assigned/${driver?.driver_id}`);
     },
     enabled: !!driver?.driver_id,
   });
