@@ -1,4 +1,4 @@
-import { CalendarClock, MapPin, Users, CircleUser } from 'lucide-react';
+import { CalendarClock, MapPinHouse, Users, CircleUser } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,7 @@ interface TripCardProps {
     pickup: string;
     dropoff: string;
     hotel: string;
+    service: string;
     customer: string;
     total_persons: number;
     booking_type: string;
@@ -34,11 +35,15 @@ const TripCard = ({ trip, showViewDetails = true }: TripCardProps) => {
       <CardContent className="space-y-2">
         <div className="flex items-center gap-2 text-sm">
           <CircleUser className="h-4 w-4 text-primary" />
-          <span>{trip.customer}</span>
+          <span>{trip.customer} </span>
         </div>
         <div className="flex items-center gap-2 text-sm">
-          <MapPin className="h-4 w-4 text-primary" />
+          <MapPinHouse className="h-4 w-4 text-primary" />
           <span>{trip.hotel}</span>
+        </div>
+        <div className="flex items-center gap-2 text-sm">
+          <MapPinned className="h-4 w-4 text-primary" />
+          <span>{trip.service}</span>
         </div>
         <div className="flex items-center gap-2 text-sm">
           <CalendarClock className="h-4 w-4 text-primary" />
