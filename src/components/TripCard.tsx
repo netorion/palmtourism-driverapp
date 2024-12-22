@@ -10,7 +10,6 @@ interface TripCardProps {
     pickup: string;
     dropoff: string;
     hotel: string;
-    service: string;
     customer: string;
     total_persons: number;
     booking_type: string;
@@ -40,10 +39,6 @@ const TripCard = ({ trip, showViewDetails = true }: TripCardProps) => {
         <div className="flex items-center gap-2 text-sm">
           <MapPinHouse className="h-4 w-4 text-primary" />
           <span>{trip.hotel}</span>
-        </div>
-        <div className="flex items-center gap-2 text-sm">
-          <MapPinned className="h-4 w-4 text-primary" />
-          <span>{trip.service}</span>
         </div>
         <div className="flex items-center gap-2 text-sm">
           <CalendarClock className="h-4 w-4 text-primary" />
