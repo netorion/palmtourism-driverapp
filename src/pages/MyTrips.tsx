@@ -10,6 +10,7 @@ interface Trip {
   pickup: string;
   dropoff: string;
   hotel: string;
+  customer: string;
   total_persons: number;
   booking_type: string;
   type: string;
