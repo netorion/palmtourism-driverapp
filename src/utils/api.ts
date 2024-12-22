@@ -3,19 +3,19 @@ const BASE_URL = 'https://www.palmtourism-uae.net/api';
 export const fetchApi = async (endpoint: string, options: RequestInit = {}) => {
   // Remove leading slash to prevent double slashes
   const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
-  console.log(`Fetching ${BASE_URL}/${cleanEndpoint}`);
+  const url = `${BASE_URL}/${cleanEndpoint}`;
+  console.log(`Fetching ${url}`);
   
   const defaultOptions: RequestInit = {
     credentials: 'include',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json',
     },
     mode: 'cors',
   };
 
   try {
-    const response = await fetch(`${BASE_URL}/${cleanEndpoint}`, {
+    const response = await fetch(url, {
       ...defaultOptions,
       ...options,
       headers: {
