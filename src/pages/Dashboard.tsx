@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import TripCard from '@/components/TripCard';
+import { toast } from '@/hooks/use-toast';
 
 interface TripStats {
   pending: number;
@@ -24,38 +25,70 @@ interface Trip {
 }
 
 const fetchWithCORS = async (url: string) => {
-  const response = await fetch(url, {
-    method: 'GET',
-    mode: 'cors',
-    credentials: 'include',
-    headers: {
-      'Accept': 'application/json',
+  console.log('Fetching:', url);
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!response.ok) {
+      console.error('Response not OK:', response.status, response.statusText);
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  });
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
+
+    const data = await response.json();
+    console.log('Fetch successful:', url, data);
+    return data;
+  } catch (error) {
+    console.error('Fetch error:', error);
+    toast({
+      variant: "destructive",
+      title: "Error",
+      description: "Failed to fetch data. Please try again later.",
+    });
+    throw error;
   }
-  return response.json();
 };
 
 const Dashboard = () => {
   const { driver } = useAuth();
 
-  const { data: stats, isLoading: statsLoading } = useQuery({
+  const { data: stats, isLoading: statsLoading, error: statsError } = useQuery({
     queryKey: ['tripStats', driver?.driver_id],
     queryFn: async () => {
       return fetchWithCORS(`https://www.palmtourism-uae.net/api/trips/stats/${driver?.driver_id}`);
     },
     enabled: !!driver?.driver_id,
+    retry: 3,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
 
-  const { data: todaysTrips, isLoading: tripsLoading } = useQuery({
+  const { data: todaysTrips, isLoading: tripsLoading, error: tripsError } = useQuery({
     queryKey: ['todaysTrips', driver?.driver_id],
     queryFn: async () => {
       return fetchWithCORS(`https://www.palmtourism-uae.net/api/trips/assigned/${driver?.driver_id}`);
     },
     enabled: !!driver?.driver_id,
+    retry: 3,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
+
+  useEffect(() => {
+    if (statsError || tripsError) {
+      console.error('Query error:', { statsError, tripsError });
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to load data. Please check your connection and try again.",
+      });
+    }
+  }, [statsError, tripsError]);
 
   if (statsLoading || tripsLoading) {
     return (
