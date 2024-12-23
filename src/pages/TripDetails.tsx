@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/contexts/AuthContext';
-import { GoogleMap, LoadScript, DirectionsRenderer, Marker } from '@react-google-maps/api';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { Phone, MapPin, Users, Car, Calendar, Clock, WhatsappIcon } from 'lucide-react';
+import { Phone, MapPin, Users, Car, Calendar, Clock, MessageSquare } from 'lucide-react';
+import TripMap from '@/components/TripMap';
 
 interface TripDetails {
   id: string;
@@ -37,8 +37,6 @@ const TripDetails = () => {
   const { tripId } = useParams();
   const navigate = useNavigate();
   const { driver } = useAuth();
-  const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number } | null>(null);
-  const [directions, setDirections] = useState<google.maps.DirectionsResult | null>(null);
 
   const { data: tripDetails, refetch } = useQuery({
     queryKey: ['tripDetails', tripId],
@@ -51,49 +49,6 @@ const TripDetails = () => {
     },
     enabled: !!tripId && !!driver?.driver_id,
   });
-
-  useEffect(() => {
-    // Get current location
-    if (navigator.geolocation) {
-      const watchId = navigator.geolocation.watchPosition(
-        (position) => {
-          setCurrentLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-        },
-        (error) => {
-          console.error('Error getting location:', error);
-          toast.error('Unable to get current location');
-        },
-        { enableHighAccuracy: true }
-      );
-
-      return () => navigator.geolocation.clearWatch(watchId);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (tripDetails && currentLocation) {
-      const directionsService = new google.maps.DirectionsService();
-      
-      directionsService.route(
-        {
-          origin: { lat: parseFloat(tripDetails.from_lat), lng: parseFloat(tripDetails.from_log) },
-          destination: { lat: parseFloat(tripDetails.to_lat), lng: parseFloat(tripDetails.to_log) },
-          travelMode: google.maps.TravelMode.DRIVING,
-        },
-        (result, status) => {
-          if (status === google.maps.DirectionsStatus.OK) {
-            setDirections(result);
-          } else {
-            console.error('Directions request failed:', status);
-            toast.error('Failed to load directions');
-          }
-        }
-      );
-    }
-  }, [tripDetails, currentLocation]);
 
   const handleStartTrip = async () => {
     try {
@@ -143,29 +98,14 @@ const TripDetails = () => {
 
   return (
     <div className="p-4 pb-20 pt-16">
-      <div className="h-[300px] mb-4 rounded-lg overflow-hidden">
-        <LoadScript googleMapsApiKey={process.env.GOOGLE_MAPS_API_KEY || ''}>
-          <GoogleMap
-            mapContainerStyle={{ width: '100%', height: '100%' }}
-            center={currentLocation || { 
-              lat: parseFloat(tripDetails.from_lat), 
-              lng: parseFloat(tripDetails.from_log) 
-            }}
-            zoom={13}
-          >
-            {directions && <DirectionsRenderer directions={directions} />}
-            {currentLocation && (
-              <Marker
-                position={currentLocation}
-                icon={{
-                  url: '/car-marker.png',
-                  scaledSize: new google.maps.Size(32, 32),
-                }}
-              />
-            )}
-          </GoogleMap>
-        </LoadScript>
-      </div>
+      {tripDetails && (
+        <TripMap
+          fromLat={tripDetails.from_lat}
+          fromLng={tripDetails.from_log}
+          toLat={tripDetails.to_lat}
+          toLng={tripDetails.to_log}
+        />
+      )}
 
       <Card>
         <CardHeader>
@@ -178,7 +118,7 @@ const TripDetails = () => {
                 onClick={handleWhatsAppClick}
                 className="text-green-500"
               >
-                <WhatsappIcon className="h-5 w-5" />
+                <MessageSquare className="h-5 w-5" />
               </Button>
             )}
           </CardTitle>
