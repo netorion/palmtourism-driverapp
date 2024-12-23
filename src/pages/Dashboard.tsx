@@ -21,6 +21,9 @@ interface Trip {
   booking_type: string;
   type: string;
   trip_status: string;
+  service: string;
+  start: string;
+  customer: string;
 }
 
 const Dashboard = () => {
