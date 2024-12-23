@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { GoogleMap, LoadScript, DirectionsRenderer, Marker } from '@react-google-maps/api';
+import { useLoadScript, GoogleMap, DirectionsRenderer, Marker } from '@react-google-maps/api';
 
 interface TripMapProps {
   fromLat: string;
@@ -11,6 +11,11 @@ interface TripMapProps {
 const TripMap = ({ fromLat, fromLng, toLat, toLng }: TripMapProps) => {
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [directions, setDirections] = useState<google.maps.DirectionsResult | null>(null);
+
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: "AIzaSyCcMW-QSYDMrT58sMJBxO1mhaeKYBNLMEc",
+    libraries: ["places"],
+  });
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -32,7 +37,7 @@ const TripMap = ({ fromLat, fromLng, toLat, toLng }: TripMapProps) => {
   }, []);
 
   useEffect(() => {
-    if (!currentLocation) return;
+    if (!isLoaded || !currentLocation) return;
 
     const directionsService = new google.maps.DirectionsService();
     
@@ -50,31 +55,41 @@ const TripMap = ({ fromLat, fromLng, toLat, toLng }: TripMapProps) => {
         }
       }
     );
-  }, [currentLocation, fromLat, fromLng, toLat, toLng]);
+  }, [isLoaded, currentLocation, fromLat, fromLng, toLat, toLng]);
+
+  if (loadError) {
+    return <div className="h-[300px] flex items-center justify-center bg-gray-100 rounded-lg">
+      Error loading maps
+    </div>;
+  }
+
+  if (!isLoaded) {
+    return <div className="h-[300px] flex items-center justify-center bg-gray-100 rounded-lg">
+      Loading maps...
+    </div>;
+  }
 
   return (
     <div className="h-[300px] mb-4 rounded-lg overflow-hidden">
-      <LoadScript googleMapsApiKey="AIzaSyCcMW-QSYDMrT58sMJBxO1mhaeKYBNLMEc">
-        <GoogleMap
-          mapContainerStyle={{ width: '100%', height: '100%' }}
-          center={currentLocation || { 
-            lat: parseFloat(fromLat), 
-            lng: parseFloat(fromLng) 
-          }}
-          zoom={13}
-        >
-          {directions && <DirectionsRenderer directions={directions} />}
-          {currentLocation && (
-            <Marker
-              position={currentLocation}
-              icon={{
-                url: '/car-marker.png',
-                scaledSize: new google.maps.Size(32, 32),
-              }}
-            />
-          )}
-        </GoogleMap>
-      </LoadScript>
+      <GoogleMap
+        mapContainerStyle={{ width: '100%', height: '100%' }}
+        center={currentLocation || { 
+          lat: parseFloat(fromLat), 
+          lng: parseFloat(fromLng) 
+        }}
+        zoom={13}
+      >
+        {directions && <DirectionsRenderer directions={directions} />}
+        {currentLocation && (
+          <Marker
+            position={currentLocation}
+            icon={{
+              url: '/car-marker.png',
+              scaledSize: new google.maps.Size(32, 32),
+            }}
+          />
+        )}
+      </GoogleMap>
     </div>
   );
 };
