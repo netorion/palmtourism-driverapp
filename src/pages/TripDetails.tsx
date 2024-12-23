@@ -35,19 +35,20 @@ interface TripDetails {
 }
 
 const TripDetails = () => {
-  const { tripId } = useParams();
+  const { tripId, type } = useParams();
   const navigate = useNavigate();
   const { driver } = useAuth();
   console.log('TripDetails - tripId:', tripId);
   console.log('TripDetails - driver:', driver);
+  console.log('TripDetails - type:', type);
 
   const { data: tripDetails, refetch } = useQuery({
-    queryKey: ['tripDetails', tripId, driver?.driver_id],
+    queryKey: ['tripDetails', tripId, driver?.driver_id, type],
     queryFn: async () => {
-      if (!tripId || !driver?.driver_id) {
+      if (!tripId || !driver?.driver_id || !type) {
         throw new Error('Missing required parameters');
       }
-      const response = await fetch(`https://www.palmtourism-uae.net/api/trip/${tripId}/${driver.driver_id}/${tripDetails?.type || 'individual'}`);
+      const response = await fetch(`https://www.palmtourism-uae.net/api/trip/${tripId}/${driver.driver_id}/${type}`);
       if (!response.ok) {
         throw new Error('Failed to fetch trip details');
       }
@@ -55,7 +56,7 @@ const TripDetails = () => {
       console.log('TripDetails - API response:', data);
       return data as TripDetails;
     },
-    enabled: !!tripId && !!driver?.driver_id,
+    enabled: !!tripId && !!driver?.driver_id && !!type,
   });
 
   const handleStartTrip = async () => {

@@ -76,7 +76,7 @@ const App = () => (
               }
             />
             <Route
-              path="/trip/:tripId"
+              path="/trip/:tripId/:type"
               element={
                 <ProtectedRoute>
                   <TripDetails />

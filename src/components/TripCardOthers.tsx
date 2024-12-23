@@ -58,7 +58,7 @@ const TripCard = ({ trip, showViewDetails = true }: TripCardProps) => {
         {showViewDetails && (
           <Button 
             className="w-full mt-4"
-            onClick={() => navigate(`/trip/${trip.id}`)}
+            onClick={() => navigate(`/trip/${trip.id}/${trip.type}`)}
           >
             View Details
           </Button>
