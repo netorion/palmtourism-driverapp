@@ -41,7 +41,7 @@ const TripDetails = () => {
   const { data: tripDetails, refetch } = useQuery({
     queryKey: ['tripDetails', tripId],
     queryFn: async () => {
-      const response = await fetch(`https://www.palmtourism-uae.net/api/trip/${tripId}/${driver?.driver_id}/${tripDetails.type}`);
+      const response = await fetch(`https://www.palmtourism-uae.net/api/trip/${tripId}/${driver?.driver_id}/individual`);
       if (!response.ok) {
         throw new Error('Failed to fetch trip details');
       }
