@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import MyTrips from "./pages/MyTrips";
 import AllTrips from "./pages/AllTrips";
 import Notifications from "./pages/Notifications";
+import TripDetails from "./pages/TripDetails";
 import BottomNav from "./components/BottomNav";
 import { useAuth } from "./contexts/AuthContext";
 
@@ -71,6 +72,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Notifications />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/trip/:tripId"
+              element={
+                <ProtectedRoute>
+                  <TripDetails />
                 </ProtectedRoute>
               }
             />
