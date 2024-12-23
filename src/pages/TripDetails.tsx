@@ -47,7 +47,7 @@ const TripDetails = () => {
       if (!tripId || !driver?.driver_id) {
         throw new Error('Missing required parameters');
       }
-      const response = await fetch(`https://www.palmtourism-uae.net/api/trip/${tripId}/${driver.driver_id}/individual`);
+      const response = await fetch(`https://www.palmtourism-uae.net/api/trip/${tripId}/${driver.driver_id}/${tripDetails?.type || 'individual'}`);
       if (!response.ok) {
         throw new Error('Failed to fetch trip details');
       }
@@ -164,7 +164,7 @@ const TripDetails = () => {
 
           {tripDetails.trip_status === 'yettostart' && (
             <Button 
-              className="w-full" 
+              className="w-full bg-green-500 hover:bg-green-600" 
               onClick={handleStartTrip}
             >
               Start Trip
@@ -173,7 +173,7 @@ const TripDetails = () => {
 
           {tripDetails.trip_status === 'ongoing' && (
             <Button 
-              className="w-full" 
+              className="w-full bg-red-500 hover:bg-red-600" 
               onClick={handleEndTrip}
             >
               End Trip

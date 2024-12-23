@@ -3,11 +3,15 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/hooks/use-toast';
+import { useNotifications } from '@/hooks/useNotifications';
 
 const BottomNav = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { logout } = useAuth();
+  const { notifications } = useNotifications();
+
+  const unreadCount = notifications?.filter(n => n.is_read === "0").length || 0;
 
   const handleLogout = async () => {
     try {
@@ -30,7 +34,7 @@ const BottomNav = () => {
     { icon: Home, label: 'Home', path: '/dashboard' },
     { icon: Car, label: 'My Trips', path: '/my-trips' },
     { icon: Map, label: 'All Trips', path: '/all-trips' },
-    { icon: Bell, label: 'Notifications', path: '/notifications' },
+    { icon: Bell, label: 'Notifications', path: '/notifications', count: unreadCount },
   ];
 
   return (
@@ -41,7 +45,7 @@ const BottomNav = () => {
             key={item.path}
             onClick={() => navigate(item.path)}
             className={cn(
-              "flex flex-col items-center p-2 rounded-lg",
+              "flex flex-col items-center p-2 rounded-lg relative",
               location.pathname === item.path
                 ? "text-primary"
                 : "text-gray-500 hover:text-primary"
@@ -49,6 +53,11 @@ const BottomNav = () => {
           >
             <item.icon className="h-6 w-6" />
             <span className="text-xs mt-1">{item.label}</span>
+            {item.count > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {item.count}
+              </span>
+            )}
           </button>
         ))}
         <button
