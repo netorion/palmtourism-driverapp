@@ -17,6 +17,7 @@ interface TripCardProps {
     booking_type: string;
     type: string;
     trip_status: string;
+    trip_status_text: string;
   };
   showViewDetails?: boolean;
 }

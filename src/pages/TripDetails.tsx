@@ -5,7 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { Phone, MapPin, Users, Car, Calendar, Clock, MessageSquare } from 'lucide-react';
+import { Phone, MapPin, Users, Car, Calendar, Clock, MessageSquareText } from 'lucide-react';
 import TripMap from '@/components/TripMap';
 
 interface TripDetails {
@@ -24,6 +24,7 @@ interface TripDetails {
   total_persons: number;
   type: string;
   trip_status: string;
+  trip_status_text: string;
   from_location: string;
   to_location: string;
   from_lat: string;
@@ -128,7 +129,7 @@ const TripDetails = () => {
                 onClick={handleWhatsAppClick}
                 className="text-green-500"
               >
-                <MessageSquare className="h-5 w-5" />
+                <MessageSquareText className="h-5 w-5" />
               </Button>
             )}
           </CardTitle>

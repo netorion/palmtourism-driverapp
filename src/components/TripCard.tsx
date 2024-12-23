@@ -17,6 +17,7 @@ interface TripCardProps {
     booking_type: string;
     type: string;
     trip_status: string;
+    trip_status_text: string;
   };
   showViewDetails?: boolean;
 }
@@ -30,7 +31,7 @@ const TripCard = ({ trip, showViewDetails = true }: TripCardProps) => {
       <CardHeader className="pb-2">
         <CardTitle className="text-lg flex justify-between items-center">
           <span>Trip #{tripId}</span>
-          <span className="text-sm font-normal text-primary">{trip.trip_status}</span>
+          <span className="text-sm font-normal text-primary">{trip.trip_status_text}</span>
           <span className="text-sm font-normal text-muted-foreground">{trip.booking_type}</span>
         </CardTitle>
       </CardHeader>

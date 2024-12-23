@@ -21,6 +21,7 @@ interface Trip {
   booking_type: string;
   type: string;
   trip_status: string;
+  trip_status_text: string;
   service: string;
   start: string;
   customer: string;
