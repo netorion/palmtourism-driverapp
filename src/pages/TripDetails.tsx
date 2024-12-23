@@ -5,7 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { Phone, MapPin, Users, Car, Calendar, Clock, MessageSquare } from 'lucide-react';
+import { Phone, MapPin, Users, Car, Calendar, Clock, MessageSquareText } from 'lucide-react';
 import TripMap from '@/components/TripMap';
 
 interface TripDetails {
@@ -41,7 +41,7 @@ const TripDetails = () => {
   const { data: tripDetails, refetch } = useQuery({
     queryKey: ['tripDetails', tripId],
     queryFn: async () => {
-      const response = await fetch(`https://www.palmtourism-uae.net/api/trip/${tripId}/${driver?.driver_id}/individual`);
+      const response = await fetch(`https://www.palmtourism-uae.net/api/trip/${tripId}/${driver?.driver_id}/${tripDetails.type}`);
       if (!response.ok) {
         throw new Error('Failed to fetch trip details');
       }
@@ -118,7 +118,7 @@ const TripDetails = () => {
                 onClick={handleWhatsAppClick}
                 className="text-green-500"
               >
-                <MessageSquare className="h-5 w-5" />
+                <MessageSquareText className="h-5 w-5" />
               </Button>
             )}
           </CardTitle>
