@@ -5,7 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { Phone, MapPin, Users, Car, Calendar, Clock, MessageCircle } from 'lucide-react';
+import { Phone, MapPin, Users, Car, Calendar, Clock, MessageSquare } from 'lucide-react';
 import TripMap from '@/components/TripMap';
 
 interface TripDetails {
@@ -118,7 +118,7 @@ const TripDetails = () => {
                 onClick={handleWhatsAppClick}
                 className="text-green-500"
               >
-                <MessageCircle className="h-5 w-5" />
+                <MessageSquare className="h-5 w-5" />
               </Button>
             )}
           </CardTitle>
@@ -151,7 +151,7 @@ const TripDetails = () => {
             </div>
           </div>
 
-          {tripDetails.trip_status === 'Not Started' && (
+          {tripDetails.trip_status === 'yettostart' && (
             <Button 
               className="w-full" 
               onClick={handleStartTrip}
@@ -160,7 +160,7 @@ const TripDetails = () => {
             </Button>
           )}
 
-          {tripDetails.trip_status === 'Currently Ongoing' && (
+          {tripDetails.trip_status === 'ongoing' && (
             <Button 
               className="w-full" 
               onClick={handleEndTrip}
