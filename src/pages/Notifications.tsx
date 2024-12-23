@@ -1,31 +1,15 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2, Trash2, Bell } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-
-interface Notification {
-  id: string;
-  title: string;
-  message: string;
-  is_read: string;
-  created_at: string;
-}
+import { useNotifications } from "@/hooks/useNotifications";
 
 const Notifications = () => {
   const { driver } = useAuth();
   const queryClient = useQueryClient();
-
-  const { data: notifications, isLoading } = useQuery({
-    queryKey: ['notifications', driver?.driver_id],
-    queryFn: async () => {
-      const response = await fetch(`https://www.palmtourism-uae.net/api/notifications/driver/${driver?.driver_id}`);
-      const data = await response.json();
-      return data.notifications as Notification[];
-    },
-    enabled: !!driver?.driver_id,
-  });
+  const { notifications } = useNotifications();
 
   const deleteNotification = useMutation({
     mutationFn: async (notificationId: string) => {
@@ -49,7 +33,7 @@ const Notifications = () => {
     },
   });
 
-  if (isLoading) {
+  if (!notifications) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Loader2 className="h-8 w-8 animate-spin" />
