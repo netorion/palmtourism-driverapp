@@ -37,15 +37,22 @@ const TripDetails = () => {
   const { tripId } = useParams();
   const navigate = useNavigate();
   const { driver } = useAuth();
+  console.log('TripDetails - tripId:', tripId);
+  console.log('TripDetails - driver:', driver);
 
   const { data: tripDetails, refetch } = useQuery({
-    queryKey: ['tripDetails', tripId],
+    queryKey: ['tripDetails', tripId, driver?.driver_id],
     queryFn: async () => {
-      const response = await fetch(`https://www.palmtourism-uae.net/api/trip/${tripId}/${driver?.driver_id}/individual`);
+      if (!tripId || !driver?.driver_id) {
+        throw new Error('Missing required parameters');
+      }
+      const response = await fetch(`https://www.palmtourism-uae.net/api/trip/${tripId}/${driver.driver_id}/individual`);
       if (!response.ok) {
         throw new Error('Failed to fetch trip details');
       }
-      return response.json() as Promise<TripDetails>;
+      const data = await response.json();
+      console.log('TripDetails - API response:', data);
+      return data as TripDetails;
     },
     enabled: !!tripId && !!driver?.driver_id,
   });
@@ -96,6 +103,9 @@ const TripDetails = () => {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
 
+  // Safely extract trip ID from title
+  const displayTripId = tripDetails.title?.split(': ')[1] || 'N/A';
+
   return (
     <div className="p-4 pb-20 pt-16">
       {tripDetails && (
@@ -110,7 +120,7 @@ const TripDetails = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
-            <span>{tripDetails.title}</span>
+            <span>Trip #{displayTripId}</span>
             {tripDetails.customer_mobile && (
               <Button
                 variant="ghost"
@@ -139,7 +149,7 @@ const TripDetails = () => {
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4 text-primary" />
-              <span>{tripDetails.start.split('T')[0]}</span>
+              <span>{tripDetails.start?.split('T')[0]}</span>
             </div>
             <div className="flex items-center gap-2">
               <Clock className="h-4 w-4 text-primary" />
