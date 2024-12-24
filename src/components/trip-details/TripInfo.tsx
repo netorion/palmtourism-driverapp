@@ -7,6 +7,7 @@ interface TripInfoProps {
   toLocation: string;
   pickup: string;
   totalPersons: number;
+  trip_note: number;
 }
 
 const TripInfo = ({ customer, hotel, fromLocation, toLocation, pickup, totalPersons }: TripInfoProps) => {
@@ -35,6 +36,10 @@ const TripInfo = ({ customer, hotel, fromLocation, toLocation, pickup, totalPers
       <div className="flex items-center gap-2">
         <Users className="h-4 w-4 text-primary" />
         <span>PAX: {totalPersons} Persons</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <Users className="h-4 w-4 text-secondary" />
+        <span>Note: {trip_note} </span>
       </div>
     </div>
   );
