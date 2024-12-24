@@ -7,6 +7,7 @@ import TripHeader from '@/components/trip-details/TripHeader';
 import TripInfo from '@/components/trip-details/TripInfo';
 import TripActions from '@/components/trip-details/TripActions';
 import TripMap from '@/components/trip-details/TripMap';
+import { useGpsTracking } from '@/hooks/useGpsTracking';
 
 interface TripDetails {
   id: string;
@@ -57,6 +58,12 @@ const TripDetails = () => {
       return data as TripDetails;
     },
     enabled: !!tripId && !!driver?.driver_id && !!type,
+  });
+
+  const { isTracking } = useGpsTracking({
+    carId: tripDetails?.car || '',
+    enabled: tripDetails?.trip_status === 'ongoing',
+    onError: (error) => toast.error(error),
   });
 
   const handleStartTrip = async () => {
@@ -151,6 +158,11 @@ const TripDetails = () => {
             onStartTrip={handleStartTrip}
             onEndTrip={handleEndTrip}
           />
+          {isTracking && (
+            <div className="text-sm text-green-600 font-medium">
+              GPS tracking active
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
