@@ -18,6 +18,7 @@ interface TripDetails {
   end: string;
   driver: string;
   car: string;
+  carId: string;
   customer: string;
   customer_mobile: string;
   booking_type: string;
@@ -61,7 +62,7 @@ const TripDetails = () => {
   });
 
   const { isTracking } = useGpsTracking({
-    carId: tripDetails?.car || '',
+    carId: tripDetails?.carId || '',
     enabled: tripDetails?.trip_status === 'ongoing',
     onError: (error) => toast.error(error),
   });
