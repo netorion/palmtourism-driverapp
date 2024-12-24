@@ -21,14 +21,18 @@ const TripInfo = ({ customer, hotel, fromLocation, toLocation, pickup, totalPers
         <MapPinHouse className="h-4 w-4 text-primary" />
         <span>Hotel: {hotel}</span>
       </div>
+      {fromLocation && (
       <div className="flex items-center gap-2">
         <CircleArrowDown className="h-4 w-4 text-secondary" />
         <span>Pick-up: {fromLocation}</span>
-      </div>
+        </div>
+        )}
+        {toLocation && (
       <div className="flex items-center gap-2">
         <MapPin className="h-4 w-4 text-green-500" />
         <span>Drop-off: {toLocation}</span>
       </div>
+        )}
       <div className="flex items-center gap-2">
         <Clock className="h-4 w-4 text-primary" />
         <span>Start Time: {pickup}</span>
