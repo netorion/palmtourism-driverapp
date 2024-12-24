@@ -153,6 +153,7 @@ const TripDetails = () => {
             toLocation={tripDetails.to_location}
             pickup={tripDetails.pickup}
             totalPersons={tripDetails.total_persons}
+            tripNote={tripDetails.trip_note}
           />
           <TripActions
             tripStatus={tripDetails.trip_status}
