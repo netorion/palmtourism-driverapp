@@ -10,7 +10,7 @@ interface TripInfoProps {
   trip_note: number;
 }
 
-const TripInfo = ({ customer, hotel, fromLocation, toLocation, pickup, totalPersons }: TripInfoProps) => {
+const TripInfo = ({ customer, hotel, fromLocation, toLocation, pickup, totalPersons, trip_note }: TripInfoProps) => {
   return (
     <div className="grid gap-4">
       <div className="flex items-center gap-2">
