@@ -5,7 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { Phone, MapPin, Users, Car, CircleArrowDown, Clock, MessageSquareText, MapPinHouse } from 'lucide-react';
+import { Phone, MapPin, Users, Car, CircleArrowDown, Clock, MessageSquareText, MapPinHouse, Navigation } from 'lucide-react';
 import TripMap from '@/components/TripMap';
 
 interface TripDetails {
@@ -101,6 +101,19 @@ const TripDetails = () => {
     }
   };
 
+  const handlePhoneClick = () => {
+    if (tripDetails?.customer_mobile) {
+      window.location.href = `tel:${tripDetails.customer_mobile}`;
+    }
+  };
+
+  const handleNavigationClick = () => {
+    if (tripDetails?.to_lat && tripDetails?.to_log) {
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${tripDetails.to_lat},${tripDetails.to_log}`;
+      window.open(url, '_blank');
+    }
+  };
+
   if (!tripDetails) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
@@ -110,28 +123,48 @@ const TripDetails = () => {
 
   return (
     <div className="p-4 pb-20 pt-16">
-      {tripDetails && (
-        <TripMap
-          fromLat={tripDetails.from_lat}
-          fromLng={tripDetails.from_log}
-          toLat={tripDetails.to_lat}
-          toLng={tripDetails.to_log}
-        />
-      )}
+      <div className="relative">
+        {tripDetails && (
+          <TripMap
+            fromLat={tripDetails.from_lat}
+            fromLng={tripDetails.from_log}
+            toLat={tripDetails.to_lat}
+            toLng={tripDetails.to_log}
+          />
+        )}
+        <Button
+          variant="default"
+          size="icon"
+          className="absolute bottom-4 right-4 bg-primary"
+          onClick={handleNavigationClick}
+        >
+          <Navigation className="h-4 w-4" />
+        </Button>
+      </div>
 
       <Card>
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
             <span>Transfer #{displayTripId}</span>
             {tripDetails.customer_mobile && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={handleWhatsAppClick}
-                className="text-green-500"
-              >
-                <MessageSquareText className="h-5 w-5" />
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handlePhoneClick}
+                  className="text-blue-500"
+                >
+                  <Phone className="h-5 w-5" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleWhatsAppClick}
+                  className="text-green-500"
+                >
+                  <MessageSquareText className="h-5 w-5" />
+                </Button>
+              </div>
             )}
           </CardTitle>
         </CardHeader>
