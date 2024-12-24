@@ -1,4 +1,4 @@
-import { Users, MapPinHouse, CircleArrowDown, MapPin, Clock } from 'lucide-react';
+import { Users, MapPinHouse, CircleArrowDown, MapPin, Clock, NotepadTextDashed } from 'lucide-react';
 
 interface TripInfoProps {
   customer: string;
@@ -38,7 +38,7 @@ const TripInfo = ({ customer, hotel, fromLocation, toLocation, pickup, totalPers
         <span>PAX: {totalPersons} Persons</span>
       </div>
       <div className="flex items-center gap-2">
-        <Users className="h-4 w-4 text-secondary" />
+        <NotepadTextDashed className="h-4 w-4 text-secondary" />
         <span>Note: {trip_note} </span>
       </div>
     </div>
