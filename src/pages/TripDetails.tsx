@@ -34,6 +34,7 @@ interface TripDetails {
   to_lat: string;
   to_log: string;
   total_distance: string;
+  trip_note: string;
 }
 
 const TripDetails = () => {
