@@ -5,7 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { Phone, MapPin, Users, Car, Calendar, Clock, MessageSquareText } from 'lucide-react';
+import { Phone, MapPin, Users, Car, CircleArrowDown, Clock, MessageSquareText, MapPinHouse } from 'lucide-react';
 import TripMap from '@/components/TripMap';
 
 interface TripDetails {
@@ -139,27 +139,27 @@ const TripDetails = () => {
           <div className="grid gap-4">
             <div className="flex items-center gap-2">
               <Users className="h-4 w-4 text-primary" />
-              <span>{tripDetails.customer}</span>
+              <span>Guest Name: {tripDetails.customer}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <MapPinHouse className="h-4 w-4 text-primary" />
+              <span>Hotel: {tripDetails.hotel}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CircleArrowDown className="h-4 w-4 text-green" />
+              <span>Pick-up: {tripDetails.from_location}</span>
             </div>
             <div className="flex items-center gap-2">
               <MapPin className="h-4 w-4 text-primary" />
-              <span>{tripDetails.hotel}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Car className="h-4 w-4 text-primary" />
-              <span>{tripDetails.car}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4 text-primary" />
-              <span>{tripDetails.start?.split('T')[0]}</span>
+              <span>Drop-off: {tripDetails.to_location}</span>
             </div>
             <div className="flex items-center gap-2">
               <Clock className="h-4 w-4 text-primary" />
-              <span>{tripDetails.pickup} - {tripDetails.dropoff}</span>
+              <span>Start Time:{tripDetails.pickup}</span>
             </div>
             <div className="flex items-center gap-2">
               <Users className="h-4 w-4 text-primary" />
-              <span>{tripDetails.total_persons} Persons</span>
+              <span>PAX: {tripDetails.total_persons} Persons</span>
             </div>
           </div>
 
