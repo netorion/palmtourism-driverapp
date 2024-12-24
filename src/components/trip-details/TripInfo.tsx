@@ -7,7 +7,7 @@ interface TripInfoProps {
   toLocation: string;
   pickup: string;
   totalPersons: number;
-  trip_note: number;
+  trip_note: string;
 }
 
 const TripInfo = ({ customer, hotel, fromLocation, toLocation, pickup, totalPersons, trip_note }: TripInfoProps) => {
