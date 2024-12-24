@@ -30,14 +30,14 @@ const TripCard = ({ trip, showViewDetails = true }: TripCardProps) => {
     <Card className="mb-4">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg flex justify-between items-center">
-          <span>Trip #{tripId}</span>
+          <span>{trip.driver}</span>
           <span className="text-sm font-normal text-muted-foreground">{trip.booking_type}</span>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
         <div className="flex items-center gap-2 text-sm">
           <CarFront className="h-4 w-4 text-primary" />
-          <span>{trip.driver}</span>
+          <span>Transfer #{tripId}</span>
         </div>
         <div className="flex items-center gap-2 text-sm">
           <MapPin className="h-4 w-4 text-primary" />
@@ -49,7 +49,7 @@ const TripCard = ({ trip, showViewDetails = true }: TripCardProps) => {
         </div>
         <div className="flex items-center gap-2 text-sm">
           <CalendarClock className="h-4 w-4 text-primary" />
-          <span>{trip.start} [{trip.pickup} - {trip.dropoff}]</span>
+          <span>{trip.start} [Picup Time: {trip.pickup}]</span>
         </div>
         <div className="flex items-center gap-2 text-sm">
           <Users className="h-4 w-4 text-primary" />

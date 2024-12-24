@@ -60,7 +60,7 @@ const MyTrips = () => {
 
   return (
     <div className="p-4 pb-20 pt-16">
-      <h1 className="text-2xl font-bold mb-6">My Trips</h1>
+      <h1 className="text-2xl font-bold mb-6">Trips for {driver?.driver_name}</h1>
       
       <Tabs defaultValue="pending" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
