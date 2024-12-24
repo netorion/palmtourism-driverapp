@@ -122,7 +122,7 @@ const TripDetails = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
-            <span>Trip #{displayTripId}</span>
+            <span>Transfer #{displayTripId}</span>
             {tripDetails.customer_mobile && (
               <Button
                 variant="ghost"
@@ -146,16 +146,16 @@ const TripDetails = () => {
               <span>Hotel: {tripDetails.hotel}</span>
             </div>
             <div className="flex items-center gap-2">
-              <CircleArrowDown className="h-4 w-4 text-green" />
+              <CircleArrowDown className="h-4 w-4 text-secondary" />
               <span>Pick-up: {tripDetails.from_location}</span>
             </div>
             <div className="flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-primary" />
+              <MapPin className="h-4 w-4 text-green-500" />
               <span>Drop-off: {tripDetails.to_location}</span>
             </div>
             <div className="flex items-center gap-2">
               <Clock className="h-4 w-4 text-primary" />
-              <span>Start Time:{tripDetails.pickup}</span>
+              <span>Start Time: {tripDetails.pickup}</span>
             </div>
             <div className="flex items-center gap-2">
               <Users className="h-4 w-4 text-primary" />
