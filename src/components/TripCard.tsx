@@ -38,23 +38,23 @@ const TripCard = ({ trip, showViewDetails = true }: TripCardProps) => {
       <CardContent className="space-y-2">
         <div className="flex items-center gap-2 text-sm">
           <CircleUser className="h-4 w-4 text-primary" />
-          <span>{trip.customer} </span>
+          <span>Guest Name: {trip.customer} </span>
         </div>
         <div className="flex items-center gap-2 text-sm">
           <MapPinHouse className="h-4 w-4 text-primary" />
-          <span>{trip.hotel}</span>
+          <span>Hotel: {trip.hotel}</span>
         </div>
         <div className="flex items-center gap-2 text-sm">
           <MapPinned className="h-4 w-4 text-primary" />
-          <span>{trip.service}</span>
+          <span>Service Type: {trip.service}</span>
         </div>
         <div className="flex items-center gap-2 text-sm">
           <CalendarClock className="h-4 w-4 text-primary" />
-          <span>{trip.start} [Pick-up Time: {trip.pickup}]</span>
+          <span>Pick-up Time: {trip.pickup} - {trip.start}</span>
         </div>
         <div className="flex items-center gap-2 text-sm">
           <Users className="h-4 w-4 text-primary" />
-          <span>{trip.total_persons} Persons</span>
+          <span>PAX: {trip.total_persons} Persons</span>
         </div>
         {showViewDetails && (
           <Button 

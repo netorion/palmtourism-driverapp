@@ -33,7 +33,7 @@ const BottomNav = () => {
   const navItems = [
     { icon: Home, label: 'Home', path: '/dashboard' },
     { icon: Car, label: 'My Trips', path: '/my-trips' },
-    { icon: Map, label: 'All Trips', path: '/all-trips' },
+    { icon: Map, label: 'Other Driver Trips', path: '/all-trips' },
     { icon: Bell, label: 'Notifications', path: '/notifications', count: unreadCount },
   ];
 

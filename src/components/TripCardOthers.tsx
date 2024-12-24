@@ -41,19 +41,19 @@ const TripCard = ({ trip, showViewDetails = true }: TripCardProps) => {
         </div>
         <div className="flex items-center gap-2 text-sm">
           <MapPin className="h-4 w-4 text-primary" />
-          <span>{trip.hotel}</span>
+          <span>Hotel: {trip.hotel}</span>
         </div>
         <div className="flex items-center gap-2 text-sm">
           <MapPinned className="h-4 w-4 text-primary" />
-          <span>{trip.service}</span>
+          <span>Service Type: {trip.service}</span>
         </div>
         <div className="flex items-center gap-2 text-sm">
           <CalendarClock className="h-4 w-4 text-primary" />
-          <span>{trip.start} [Picup Time: {trip.pickup}]</span>
+          <span>Picup Time: {trip.pickup} - {trip.start}</span>
         </div>
         <div className="flex items-center gap-2 text-sm">
           <Users className="h-4 w-4 text-primary" />
-          <span>{trip.total_persons} Persons</span>
+          <span>PAX: {trip.total_persons} Persons</span>
         </div>
         {showViewDetails && (
           <Button 
