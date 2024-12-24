@@ -37,10 +37,12 @@ const TripInfo = ({ customer, hotel, fromLocation, toLocation, pickup, totalPers
         <Users className="h-4 w-4 text-primary" />
         <span>PAX: {totalPersons} Persons</span>
       </div>
-      <div className="flex items-center gap-2">
+      {tripNote && (
+      <div className="flex items-center gap-2 bg-yellow-100 text-red-500 p-2 rounded">
         <NotepadTextDashed className="h-4 w-4 text-secondary" />
         <span>Note: {tripNote} </span>
-      </div>
+        </div>
+        )}
     </div>
   );
 };
