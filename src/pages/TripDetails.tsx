@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import TripHeader from '@/components/trip-details/TripHeader';
 import TripInfo from '@/components/trip-details/TripInfo';
 import TripActions from '@/components/trip-details/TripActions';
-import TripMap from '@/components/TripMap';
+import TripMap from '@/components/trip-details/TripMap';
 import { useGpsTracking } from '@/hooks/useGpsTracking';
 
 interface TripDetails {
@@ -136,6 +136,7 @@ const TripDetails = () => {
         fromLng={tripDetails.from_log}
         toLat={tripDetails.to_lat}
         toLng={tripDetails.to_log}
+        onNavigationClick={handleNavigationClick}
       />
 
       <Card>
