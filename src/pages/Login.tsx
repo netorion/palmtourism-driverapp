@@ -23,7 +23,14 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
+        <CardHeader className="space-y-4">
+          <div className="flex justify-center">
+            <img 
+              src="/lovable-uploads/75ad82f9-04a0-49b7-bf5f-9d4d934ee936.png" 
+              alt="Palm Tourism Logo" 
+              className="h-24 w-auto mb-4"
+            />
+          </div>
           <CardTitle className="text-2xl font-bold text-center">Driver Login</CardTitle>
         </CardHeader>
         <CardContent>
