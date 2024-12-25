@@ -3,6 +3,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { requestNotificationPermission } from '@/lib/firebase';
+import { toast } from '@/hooks/use-toast';
 
 const Login = () => {
   const [mobile, setMobile] = useState('');
@@ -15,6 +17,40 @@ const Login = () => {
     setIsLoading(true);
     try {
       await login(mobile, password);
+      
+      // Request notification permission and get FCM token
+      try {
+        const fcmToken = await requestNotificationPermission();
+        if (fcmToken) {
+          // Send FCM token to backend
+          const formData = new FormData();
+          formData.append('token', fcmToken);
+          
+          await fetch('https://www.palmtourism-uae.net/api/notifications/register-device', {
+            method: 'POST',
+            body: formData,
+          });
+          
+          toast({
+            title: "Notifications Enabled",
+            description: "You will now receive push notifications",
+          });
+        }
+      } catch (error) {
+        console.error('Failed to setup notifications:', error);
+        toast({
+          variant: "destructive",
+          title: "Notification Setup Failed",
+          description: "You may not receive push notifications",
+        });
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Invalid credentials. Please try again.",
+      });
     } finally {
       setIsLoading(false);
     }
