@@ -16,15 +16,16 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await login(mobile, password);
+      const driverData = await login(mobile, password);
       
       // Request notification permission and get FCM token
       try {
         const fcmToken = await requestNotificationPermission();
         if (fcmToken) {
-          // Send FCM token to backend
+          // Send FCM token to backend with driver ID
           const formData = new FormData();
           formData.append('token', fcmToken);
+          formData.append('user_id', driverData.driver_id);
           
           await fetch('https://www.palmtourism-uae.net/api/notifications/register-device', {
             method: 'POST',

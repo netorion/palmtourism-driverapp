@@ -10,7 +10,7 @@ interface Driver {
 
 interface AuthContextType {
   driver: Driver | null;
-  login: (mobile: string, password: string) => Promise<void>;
+  login: (mobile: string, password: string) => Promise<Driver>;
   logout: () => Promise<void>;
   isLoading: boolean;
 }
@@ -52,6 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           title: "Success",
           description: "Welcome back!",
         });
+        return driverData; // Return the driver data
       } else {
         throw new Error('Login failed');
       }
@@ -62,6 +63,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         title: "Error",
         description: "Invalid credentials. Please try again.",
       });
+      throw error;
     }
   };
 
