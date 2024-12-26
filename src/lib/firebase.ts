@@ -14,6 +14,20 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
+const registerServiceWorker = async () => {
+  try {
+    if ('serviceWorker' in navigator) {
+      const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+      console.log('Service Worker registered with scope:', registration.scope);
+      return registration;
+    }
+    throw new Error('Service Worker not supported');
+  } catch (error) {
+    console.error('Service Worker registration failed:', error);
+    throw error;
+  }
+};
+
 export const requestNotificationPermission = async () => {
   console.log('Requesting notification permission...');
   
@@ -23,6 +37,10 @@ export const requestNotificationPermission = async () => {
       console.log('Notifications not supported');
       throw new Error('This browser does not support notifications');
     }
+
+    // Register service worker first
+    await registerServiceWorker();
+    console.log('Service Worker registered successfully');
 
     // Check current permission state
     let permission = Notification.permission;
