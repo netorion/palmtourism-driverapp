@@ -32,16 +32,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (mobile: string, password: string) => {
     try {
+      console.log('Preparing login request with mobile:', mobile);
+      
       const formData = new FormData();
       formData.append('mobile', mobile);
       formData.append('password', password);
 
+      console.log('Sending login request...');
+      
       const response = await fetch('https://www.palmtourism-uae.net/api/auth/login', {
         method: 'POST',
         body: formData,
       });
 
+      console.log('Login response status:', response.status);
       const data = await response.json();
+      console.log('Login response data:', data);
 
       if (data.status === 'success') {
         const driverData = data.driver;
@@ -52,9 +58,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           title: "Success",
           description: "Welcome back!",
         });
-        return driverData; // Return the driver data
+        return driverData;
       } else {
-        throw new Error('Login failed');
+        console.error('Login failed:', data);
+        throw new Error(data.message || 'Login failed');
       }
     } catch (error) {
       console.error('Login error:', error);

@@ -15,14 +15,24 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+
+    // Trim whitespace from inputs
+    const trimmedMobile = mobile.trim();
+    const trimmedPassword = password.trim();
+
+    console.log('Attempting login with:', {
+      mobile: trimmedMobile,
+      passwordLength: trimmedPassword.length
+    });
+
     try {
-      const driverData = await login(mobile, password);
+      const driverData = await login(trimmedMobile, trimmedPassword);
+      console.log('Login successful:', driverData);
       
       // Request notification permission and get FCM token
       try {
         const fcmToken = await requestNotificationPermission();
         if (fcmToken) {
-          // Send FCM token to backend with driver ID
           const formData = new FormData();
           formData.append('token', fcmToken);
           formData.append('user_id', driverData.driver_id);
@@ -39,7 +49,6 @@ const Login = () => {
         }
       } catch (error: any) {
         console.error('Failed to setup notifications:', error);
-        // Show different messages based on the error
         if (error.message === 'Notification permission was denied') {
           toast({
             variant: "destructive",
@@ -53,7 +62,6 @@ const Login = () => {
             description: "You may not receive push notifications. Please check your browser settings.",
           });
         }
-        // Continue with login even if notifications fail
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -81,15 +89,17 @@ const Login = () => {
           <CardTitle className="text-2xl font-bold text-center">Driver Login</CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
             <div className="space-y-2">
               <Input
                 type="tel"
+                inputMode="tel"
                 placeholder="Mobile Number"
                 value={mobile}
                 onChange={(e) => setMobile(e.target.value)}
                 className="w-full"
                 required
+                autoComplete="off"
               />
             </div>
             <div className="space-y-2">
@@ -100,6 +110,7 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full"
                 required
+                autoComplete="off"
               />
             </div>
             <Button
