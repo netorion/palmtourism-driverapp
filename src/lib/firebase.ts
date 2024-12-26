@@ -7,7 +7,8 @@ const firebaseConfig = {
   projectId: "palm-drivers-app",
   storageBucket: "palm-drivers-app.firebasestorage.app",
   messagingSenderId: "907749560672",
-  appId: "1:907749560672:web:4427f0a9d1da7562e7ce05"
+  appId: "1:907749560672:web:4427f0a9d1da7562e7ce05",
+  measurementId: "G-6YJP48125Q"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -37,7 +38,7 @@ export const requestNotificationPermission = async () => {
     if (permission === 'granted') {
       console.log('Getting FCM token...');
       const token = await getToken(messaging, {
-        vapidKey: 'BELsFCoUj11DkNRXsBlS5_ReNzWtYf3TXjaixZFHWOo'
+        vapidKey: 'BLqLc2VJJ2MIP5tvptX0OYUq_Aa82AscjfbpD22W8AR3MKd_ccS4dEHeLOJMw5LPhelsGw2-ATStgn4oeqfGZTU'
       });
       
       if (token) {
