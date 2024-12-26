@@ -46,6 +46,11 @@ export const requestNotificationPermission = async () => {
     let permission = Notification.permission;
     console.log('Current permission state:', permission);
 
+    // If permission is already denied, throw error immediately
+    if (permission === 'denied') {
+      throw new Error('Notification permission was denied');
+    }
+
     // If permission is not granted and not denied, request it
     if (permission !== 'granted') {
       permission = await Notification.requestPermission();
@@ -65,10 +70,8 @@ export const requestNotificationPermission = async () => {
       } else {
         throw new Error('No registration token available');
       }
-    } else if (permission === 'denied') {
-      throw new Error('Notification permission was denied');
     } else {
-      throw new Error('Notification permission was not granted');
+      throw new Error('Notification permission was denied');
     }
   } catch (error) {
     console.error('Notification permission error:', error);

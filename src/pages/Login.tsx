@@ -26,8 +26,6 @@ const Login = () => {
           const formData = new FormData();
           formData.append('token', fcmToken);
           formData.append('user_id', driverData.driver_id);
-
-          console.log(formData);
           
           await fetch('https://www.palmtourism-uae.net/api/notifications/register-device', {
             method: 'POST',
@@ -36,16 +34,26 @@ const Login = () => {
           
           toast({
             title: "Notifications Enabled",
-            description: "You will now receive push notifications",
+            description: "You will receive push notifications for new trips and updates",
           });
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error('Failed to setup notifications:', error);
-        toast({
-          variant: "destructive",
-          title: "Notification Setup Failed",
-          description: "You may not receive push notifications",
-        });
+        // Show different messages based on the error
+        if (error.message === 'Notification permission was denied') {
+          toast({
+            variant: "destructive",
+            title: "Notifications Blocked",
+            description: "Please enable notifications in your browser settings to receive trip updates",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Notification Setup Failed",
+            description: "You may not receive push notifications. Please check your browser settings.",
+          });
+        }
+        // Continue with login even if notifications fail
       }
     } catch (error) {
       console.error('Login error:', error);
