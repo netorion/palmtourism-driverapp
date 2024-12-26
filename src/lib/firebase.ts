@@ -14,15 +14,43 @@ const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
 export const requestNotificationPermission = async () => {
+  console.log('Requesting notification permission...');
+  
   try {
-    const permission = await Notification.requestPermission();
-    if (permission === 'granted') {
-      const token = await getToken(messaging, {
-        vapidKey: 'V0LsFCoUj11DkNRXsBlS5_ReNzWtYf3TXjaixZFHWOo'
-      });
-      return token;
+    // First check if notification API is supported
+    if (!('Notification' in window)) {
+      console.log('Notifications not supported');
+      throw new Error('This browser does not support notifications');
     }
-    throw new Error('Notification permission denied');
+
+    // Check current permission state
+    let permission = Notification.permission;
+    console.log('Current permission state:', permission);
+
+    // If permission is not granted and not denied, request it
+    if (permission !== 'granted') {
+      permission = await Notification.requestPermission();
+      console.log('Permission request result:', permission);
+    }
+
+    // Only proceed if permission is granted
+    if (permission === 'granted') {
+      console.log('Getting FCM token...');
+      const token = await getToken(messaging, {
+        vapidKey: 'BELsFCoUj11DkNRXsBlS5_ReNzWtYf3TXjaixZFHWOo'
+      });
+      
+      if (token) {
+        console.log('FCM Token obtained:', token);
+        return token;
+      } else {
+        throw new Error('No registration token available');
+      }
+    } else if (permission === 'denied') {
+      throw new Error('Notification permission was denied');
+    } else {
+      throw new Error('Notification permission was not granted');
+    }
   } catch (error) {
     console.error('Notification permission error:', error);
     throw error;
@@ -32,6 +60,7 @@ export const requestNotificationPermission = async () => {
 export const onMessageListener = () =>
   new Promise((resolve) => {
     onMessage(messaging, (payload) => {
+      console.log('Message received:', payload);
       resolve(payload);
     });
   });
