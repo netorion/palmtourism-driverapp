@@ -26,6 +26,8 @@ const Login = () => {
           const formData = new FormData();
           formData.append('token', fcmToken);
           formData.append('user_id', driverData.driver_id);
+
+          console.log(formData);
           
           await fetch('https://www.palmtourism-uae.net/api/notifications/register-device', {
             method: 'POST',
