@@ -34,8 +34,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       console.log('Preparing login request with mobile:', mobile);
       
+      // Format mobile number: ensure it starts with +971 if not already
+      let formattedMobile = mobile.trim();
+      if (!formattedMobile.startsWith('+')) {
+        // Remove leading zeros or any country code
+        formattedMobile = formattedMobile.replace(/^0+/, '');
+        // Add +971 if not present
+        if (!formattedMobile.startsWith('971')) {
+          formattedMobile = '+971' + formattedMobile;
+        } else {
+          formattedMobile = '+' + formattedMobile;
+        }
+      }
+      
+      console.log('Formatted mobile number:', formattedMobile);
+
       const formData = new FormData();
-      formData.append('mobile', mobile);
+      formData.append('mobile', formattedMobile);
       formData.append('password', password);
 
       console.log('Sending login request...');
@@ -43,6 +58,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const response = await fetch('https://www.palmtourism-uae.net/api/auth/login', {
         method: 'POST',
         body: formData,
+        headers: {
+          'Accept': 'application/json',
+        }
       });
 
       console.log('Login response status:', response.status);
