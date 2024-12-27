@@ -42,6 +42,7 @@ const App = () => (
       <AuthProvider>
         <TooltipProvider>
           <Routes>
+            <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
             <Route
               path="/dashboard"
@@ -83,7 +84,6 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
           </Routes>
           <Toaster />
           <Sonner />
